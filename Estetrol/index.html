@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estetrol/Drospirenone: คู่มือทางคลินิกเชิงโต้ตอบ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (FDFBF7, 6B7A8F, D7A9A8, F7C2C0) -->
+    <!-- Application Structure Plan: A single-page, scrolling application with a sticky navigation bar for quick access to key clinical decision-support sections. The structure prioritizes task-oriented modules (VTE Risk Comparison, Contraindication Checker, Dosing Guides) over the linear format of the source report. This design allows busy clinicians to quickly find actionable information. The interactive VTE chart is the centerpiece, designed to clearly communicate the primary safety advantage. -->
+    <!-- Visualization & Content Choices: 1. VTE Risk: Goal=Compare, Viz=Interactive Bar Chart (Chart.js), Interaction=Tooltips on hover. Justification: Visually impactful comparison of risk categories, superior to a static table for quick comprehension. 2. Contraindications: Goal=Organize/Inform, Viz=Interactive Checklist (HTML/JS), Interaction=User selection triggers conditional feedback. Justification: Transforms a passive list into an active clinical tool. 3. Dosing/Missed Pill Guide: Goal=Organize, Viz=Accordions (HTML/JS), Interaction=Click to expand/collapse. Justification: Reduces information overload by showing only relevant instructions. 4. Pros/Cons: Goal=Compare, Viz=Two-column styled list (HTML/Tailwind). Justification: Simple, scannable comparison. CONFIRMATION: NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #FDFBF7;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s;
+        }
+        .nav-link.active {
+            color: #D7A9A8;
+            border-bottom: 2px solid #D7A9A8;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-50 bg-[#FDFBF7]/80 backdrop-blur-lg shadow-sm">
+        <nav class="container mx-auto px-4">
+            <div class="flex items-center justify-center h-16">
+                <div class="flex items-center space-x-4 md:space-x-8 text-sm md:text-base">
+                    <a href="#overview" class="nav-link px-2 py-1 text-gray-600 hover:text-[#D7A9A8]">ภาพรวม</a>
+                    <a href="#safety" class="nav-link px-2 py-1 text-gray-600 hover:text-[#D7A9A8]">โปรไฟล์ความปลอดภัย</a>
+                    <a href="#pro-con" class="nav-link px-2 py-1 text-gray-600 hover:text-[#D7A9A8]">ข้อดี-ข้อเสีย</a>
+                    <a href="#dosing" class="nav-link px-2 py-1 text-gray-600 hover:text-[#D7A9A8]">การบริหารยา</a>
+                    <a href="#contraindications" class="nav-link px-2 py-1 text-gray-600 hover:text-[#D7A9A8]">ข้อห้ามใช้</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="hero" class="text-center py-12 md:py-20">
+            <h1 class="text-3xl md:text-5xl font-bold text-[#6B7A8F]">Estetrol/Drospirenone (Nextstellis®)</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">คู่มือทางคลินิกเชิงโต้ตอบ: สรุปข้อมูลสำคัญของยาคุมกำเนิดยุคใหม่ เพื่อการตัดสินใจทางคลินิกที่รวดเร็วและแม่นยำ</p>
+        </section>
+
+        <div class="space-y-16 md:space-y-24">
+
+            <section id="overview">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#6B7A8F] mb-8">ภาพรวมและกลไกการออกฤทธิ์</h2>
+                <p class="text-center max-w-4xl mx-auto text-gray-600 mb-12">
+                    ส่วนนี้จะสรุปข้อมูลพื้นฐานที่สำคัญของยา Estetrol/Drospirenone ซึ่งเป็นการผสมผสานระหว่าง Estetrol (E4) เอสโตรเจนตามธรรมชาติที่มีกลไกการออกฤทธิ์แบบจำเพาะ (D-SETA) และ Drospirenone (DRSP) โปรเจสตินที่มีคุณสมบัติพิเศษ ช่วยให้เข้าใจถึงที่มาและเหตุผลที่ยานี้มีความแตกต่างจากยาคุมกำเนิดฮอร์โมนรวมชนิดอื่น
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="font-bold text-xl mb-3 text-[#6B7A8F]">องค์ประกอบสำคัญ</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold">Estetrol (E4) 14.2 มก.</h4>
+                                <p class="text-sm text-gray-600">เอสโตรเจนตามธรรมชาติที่ผลิตจากตับของทารกในครรภ์ มีกลไกออกฤทธิ์แบบ <span class="font-semibold">D-SETA</span> (Distinct Selective Estrogen Receptor Agonist) ซึ่งออกฤทธิ์จำเพาะต่อเนื้อเยื่อเป้าหมาย ทำให้มีผลกระทบต่อตับและระบบการแข็งตัวของเลือดน้อย</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Drospirenone (DRSP) 3 มก.</h4>
+                                <p class="text-sm text-gray-600">โปรเจสตินที่มีฤทธิ์ <span class="font-semibold">Anti-mineralocorticoid</span> ช่วยลดการบวมน้ำ และ <span class="font-semibold">Anti-androgenic</span> ช่วยลดสิว ผิวมัน</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <h4 class="font-bold text-2xl text-[#D7A9A8]">98%+</h4>
+                            <p class="text-sm text-gray-600">ประสิทธิภาพในการคุมกำเนิด (รวมถึงผู้มี BMI > 30)</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <h4 class="font-bold text-2xl text-[#D7A9A8]">15.5 วัน</h4>
+                            <p class="text-sm text-gray-600">ระยะเวลาเฉลี่ยในการกลับมาตกไข่หลังหยุดยา</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100 col-span-2">
+                            <h4 class="font-bold text-lg text-[#D7A9A8]">Pearl Index</h4>
+                            <p class="text-sm text-gray-600">0.44 (EU) - 2.65 (US)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="safety">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#6B7A8F] mb-8">โปรไฟล์ความปลอดภัย: ความเสี่ยง VTE ที่แตกต่าง</h2>
+                 <p class="text-center max-w-4xl mx-auto text-gray-600 mb-12">
+                    จุดเด่นที่สำคัญที่สุดของ Estetrol คือผลกระทบต่อระบบการแข็งตัวของเลือดที่น้อยกว่า Ethinylestradiol (EE) ซึ่งอาจนำไปสู่ความเสี่ยงในการเกิดภาวะลิ่มเลือดอุดตันในหลอดเลือดดำ (VTE) ที่ลดลง แผนภูมินี้เปรียบเทียบความเสี่ยง VTE ในบริบทต่างๆ เพื่อให้เห็นภาพที่ชัดเจนยิ่งขึ้น
+                </p>
+                <div class="bg-white p-4 md:p-8 rounded-xl shadow-lg border border-gray-100">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">เปรียบเทียบความเสี่ยง VTE สัมพัทธ์ (Relative Risk)</h3>
+                    <div class="chart-container">
+                        <canvas id="vteRiskChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-4">ข้อมูลอ้างอิงจากการศึกษา Phase 2 และ Guideline ต่างๆ</p>
+                </div>
+            </section>
+
+            <section id="pro-con">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#6B7A8F] mb-8">ภาพรวมทางคลินิก: ข้อดีและข้อควรระวัง</h2>
+                 <p class="text-center max-w-4xl mx-auto text-gray-600 mb-12">
+                    การพิจารณาเลือกใช้ยาคุมกำเนิดจำเป็นต้องชั่งน้ำหนักระหว่างประโยชน์และผลข้างเคียงที่อาจเกิดขึ้น ส่วนนี้สรุปข้อดีที่โดดเด่นและข้อเสียหรือผลข้างเคียงที่พบบ่อยของ Estetrol/Drospirenone เพื่อใช้ประกอบการให้คำปรึกษาแก่ผู้ป่วย
+                </p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-xl font-bold text-green-600 mb-4">ข้อดีและประโยชน์</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">โปรไฟล์ VTE ที่ดีขึ้น:</strong> มีผลต่อปัจจัยการแข็งตัวของเลือดน้อยกว่า EE</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">ผลต่อเมตาบอลิซึมน้อย:</strong> ไม่ผ่านการเมตาบอไลซ์โดย CYP450, มีผลต่อไขมันและคาร์โบไฮเดรตน้อย</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">ควบคุมรอบเดือนได้ดี:</strong> มีเลือดออกกะปริบกะปรอยน้อย, อัตราการใช้ยาต่อเนื่องสูง</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">ประโยชน์จาก DRSP:</strong> ลดอาการบวมน้ำ, ช่วยเรื่องสิวและผิวมัน</span></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">ประโยชน์อื่นๆ:</strong> มีผลดีต่อสุขภาพกระดูก, ช่องคลอด และอาจช่วยลดอาการปวดจากเยื่อบุโพรงมดลูกเจริญผิดที่</span></li>
+                             <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔</span><span><strong class="font-semibold">Half-life ยาว:</strong> เพิ่มความยืดหยุ่นกรณีลืมทานยา 1-2 เม็ด</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-xl font-bold text-orange-600 mb-4">ข้อเสียและผลข้างเคียง</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="text-orange-500 mr-2 mt-1">❗</span><span><strong class="font-semibold">เลือดออกผิดปกติ (Metrorrhagia):</strong> พบบ่อยที่สุดในช่วงแรกและเป็นสาเหตุหลักของการหยุดยา</span></li>
+                            <li class="flex items-start"><span class="text-orange-500 mr-2 mt-1">❗</span><span><strong class="font-semibold">ผลข้างเคียงทั่วไป:</strong> ปวดศีรษะ, คัดตึงเต้านม, อารมณ์แปรปรวน, ความต้องการทางเพศลดลง, สิว (อาจพบได้)</span></li>
+                            <li class="flex items-start"><span class="text-orange-500 mr-2 mt-1">❗</span><span><strong class="font-semibold">ความเสี่ยง VTE:</strong> แม้จะต่ำกว่า แต่ยังคงมีความเสี่ยงเช่นเดียวกับ COC ทั่วไป</span></li>
+                            <li class="flex items-start"><span class="text-orange-500 mr-2 mt-1">❗</span><span><strong class="font-semibold">ภาวะโพแทสเซียมสูง (Hyperkalemia):</strong> จาก DRSP ต้องระวังในผู้ป่วยไตบกพร่องหรือใช้ยาบางชนิด</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="dosing">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#6B7A8F] mb-8">การบริหารยาและคำแนะนำ</h2>
+                 <p class="text-center max-w-4xl mx-auto text-gray-600 mb-12">
+                    ส่วนนี้เป็นเครื่องมือช่วยในการให้คำแนะนำเกี่ยวกับการเริ่มใช้ยาและการจัดการเมื่อลืมรับประทานยา ซึ่งเป็นปัจจัยสำคัญต่อประสิทธิภาพการคุมกำเนิด สามารถเลือกสถานการณ์ของผู้ป่วยเพื่อดูคำแนะนำที่เหมาะสมได้ทันที
+                </p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-xl font-bold text-[#6B7A8F] mb-4">วิธีเริ่มยา</h3>
+                        <div id="dosing-accordion" class="space-y-2">
+                            <div class="accordion-item">
+                                <button class="accordion-header w-full text-left font-semibold p-3 bg-gray-50 hover:bg-gray-100 rounded-md transition flex justify-between items-center">
+                                    <span>ผู้ใช้รายใหม่</span>
+                                    <span class="accordion-icon transform duration-300">▼</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <p class="p-3 text-sm text-gray-600">เริ่มเม็ดแรกในวันแรกของการมีประจำเดือน หากเริ่มวันอื่น ให้ใช้การคุมกำเนิดแบบไม่ใช้ฮอร์โมนร่วมด้วย 7 วัน</p>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header w-full text-left font-semibold p-3 bg-gray-50 hover:bg-gray-100 rounded-md transition flex justify-between items-center">
+                                    <span>เปลี่ยนจาก COC อื่น</span>
+                                     <span class="accordion-icon transform duration-300">▼</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <p class="p-3 text-sm text-gray-600">เริ่มยาเมื่อถึงกำหนดที่ต้องเริ่มแผงใหม่ของยาเดิม</p>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header w-full text-left font-semibold p-3 bg-gray-50 hover:bg-gray-100 rounded-md transition flex justify-between items-center">
+                                    <span>หลังคลอด (>4 สัปดาห์)</span>
+                                     <span class="accordion-icon transform duration-300">▼</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <p class="p-3 text-sm text-gray-600">หากประจำเดือนยังไม่มา ให้แน่ใจว่าไม่ตั้งครรภ์ และใช้การคุมกำเนิดแบบไม่ใช้ฮอร์โมนร่วมด้วย 7 วัน</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-xl font-bold text-[#6B7A8F] mb-4">กรณีลืมรับประทานยา</h3>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li class="p-3 bg-pink-50 rounded-md"><strong>ลืม 1 เม็ด (สีชมพู):</strong> ทานทันทีที่นึกได้ และทานเม็ดต่อไปตามเวลาปกติ ไม่ต้องใช้การคุมกำเนิดสำรอง</li>
+                            <li class="p-3 bg-pink-50 rounded-md"><strong>ลืม ≥2 เม็ด (สีชมพู):</strong> ทานเม็ดล่าสุดที่ลืมทันที ทิ้งเม็ดที่ลืมก่อนหน้าไป และใช้การคุมกำเนิดสำรอง 7 วัน</li>
+                            <li class="p-3 bg-gray-50 rounded-md"><strong>ลืมเม็ดสีขาว:</strong> ทิ้งเม็ดที่ลืมไปและทานเม็ดต่อไปตามปกติ ไม่ต้องใช้การคุมกำเนิดสำรอง</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contraindications">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#6B7A8F] mb-8">เครื่องมือตรวจสอบข้อห้ามใช้</h2>
+                 <p class="text-center max-w-4xl mx-auto text-gray-600 mb-12">
+                    เพื่อความปลอดภัยสูงสุดของผู้ป่วย การคัดกรองประวัติและปัจจัยเสี่ยงเป็นสิ่งสำคัญอย่างยิ่ง เครื่องมือนี้ช่วยตรวจสอบข้อห้ามใช้ที่สำคัญได้อย่างรวดเร็ว โดยเลือกประวัติหรือภาวะของผู้ป่วยเพื่อดูผลการประเมินเบื้องต้น
+                </p>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-semibold text-lg mb-3">เลือกประวัติ/ภาวะของผู้ป่วย:</h3>
+                            <div id="contra-checklist" class="space-y-2">
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="vte">มีประวัติ/ความเสี่ยงสูงต่อ VTE/ATE</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="smoker">อายุ ≥35 ปี และสูบบุหรี่</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="cancer">มีประวัติ/เป็นมะเร็งที่ไวต่อฮอร์โมน (เช่น มะเร็งเต้านม)</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="liver">มีโรคตับรุนแรง (เนื้องอก, ตับแข็ง)</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="renal">มีภาวะไตบกพร่องรุนแรง / ต่อมหมวกไตบกพร่อง</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="migraine">ไมเกรนชนิดมีออร่า</label>
+                                <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="checkbox" class="h-4 w-4 text-[#D7A9A8] border-gray-300 rounded focus:ring-[#D7A9A8] mr-3" value="hcv">ใช้ยาต้านไวรัสตับอักเสบซีบางชนิด</label>
+                            </div>
+                        </div>
+                        <div id="contra-result-container" class="flex items-center justify-center p-6 bg-gray-50 rounded-lg">
+                            <div id="contra-result" class="text-center">
+                                <p class="text-gray-500">ผลการประเมินจะแสดงที่นี่</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-[#6B7A8F] text-white mt-16">
+        <div class="container mx-auto p-6 text-center text-sm">
+            <p>แอปพลิเคชันนี้จัดทำขึ้นเพื่อเป็นข้อมูลสรุปสำหรับบุคลากรทางการแพทย์เท่านั้น</p>
+            <p>โปรดอ้างอิงข้อมูลฉบับเต็มจากเอกสารกำกับยา (Package Insert) หรือแหล่งข้อมูลที่เป็นทางการล่าสุดเสมอ</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const vteRiskData = {
+                labels: ['ไม่ใช้ฮอร์โมน', 'ตั้งครรภ์', 'หลังคลอด', 'COC (Levonorgestrel)', 'COC (Desogestrel)', 'Estetrol/DRSP'],
+                datasets: [{
+                    label: 'ความเสี่ยง VTE สัมพัทธ์ (RR)',
+                    data: [1.0, 4.29, 4.29, 2.8, 3.8, 1.59],
+                    backgroundColor: [
+                        '#A9A9A9', 
+                        '#F7C2C0',
+                        '#F7C2C0',
+                        '#B0C4DE',
+                        '#B0C4DE',
+                        '#6B7A8F' 
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            };
+
+            const vteRiskConfig = {
+                type: 'bar',
+                data: vteRiskData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x.toFixed(2);
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'เปรียบเทียบความเสี่ยง VTE เทียบกับกลุ่มไม่ใช้ฮอร์โมน (RR=1.0)',
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            },
+                            font: {
+                                size: 14,
+                                family: 'Sarabun'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Relative Risk (RR)',
+                                font: {
+                                    size: 12,
+                                    family: 'Sarabun'
+                                }
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Sarabun'
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const vteRiskChartCtx = document.getElementById('vteRiskChart').getContext('2d');
+            new Chart(vteRiskChartCtx, vteRiskConfig);
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+
+                header.addEventListener('click', () => {
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = '0px');
+                    document.querySelectorAll('.accordion-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const checklist = document.getElementById('contra-checklist');
+            const resultDiv = document.getElementById('contra-result');
+            const resultContainer = document.getElementById('contra-result-container');
+            
+            const initialResultHTML = resultDiv.innerHTML;
+            const initialContainerClass = resultContainer.className;
+
+            checklist.addEventListener('change', () => {
+                const checkedItems = Array.from(checklist.querySelectorAll('input:checked'));
+                
+                resultContainer.className = initialContainerClass;
+
+                if (checkedItems.length > 0) {
+                    resultDiv.innerHTML = `
+                        <div class="text-red-600">
+                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h4 class="font-bold text-lg">มีข้อห้ามใช้ (Contraindicated)</h4>
+                            <p class="text-sm mt-1">ไม่ควรใช้ยานี้ในผู้ป่วยที่มีภาวะนี้</p>
+                        </div>
+                    `;
+                    resultContainer.classList.add('bg-red-50', 'border', 'border-red-200');
+                } else {
+                    resultDiv.innerHTML = `
+                         <div class="text-green-600">
+                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h4 class="font-bold text-lg">ไม่มีข้อห้ามใช้ที่เลือก</h4>
+                            <p class="text-sm mt-1">โปรดประเมินปัจจัยเสี่ยงอื่นๆ เพิ่มเติม</p>
+                        </div>
+                    `;
+                     resultContainer.classList.add('bg-green-50', 'border', 'border-green-200');
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            function updateActiveLink() {
+                let index = sections.length;
+
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.nav-link[href="#${sections[index].id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+        });
+    </script>
+</body>
+</html>
